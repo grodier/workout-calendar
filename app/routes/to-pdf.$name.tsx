@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { renderToStream } from "@react-pdf/renderer";
 // this is your PDF document component created with React PDF
-import PDF from "~/components/Pdf";
+import { PDFv2 as PDF } from "~/components/Pdf";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const title = params.name || "";
