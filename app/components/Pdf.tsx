@@ -7,8 +7,12 @@ interface PDFProps {
   title: string;
 }
 
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
+
 function getMonthStartDate(date: Date) {
-  return date.getDay();
+  return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
 }
 
 function getDaysInMonth(date: Date) {
@@ -42,7 +46,8 @@ function divideArrayIntoChunks(arr: Array<any>, chunkSize: number = 7) {
 }
 
 export function PDF({ title }: PDFProps) {
-  console.log(divideArrayIntoChunks(createDateArray(new Date(), 1)));
+  let dividedDateArray = divideArrayIntoChunks(createDateArray(new Date(), 1));
+
   return (
     <Document style={tw("h-full")}>
       <Page size="A4" style={tw("flex flex-col h-full")}>
@@ -83,96 +88,35 @@ export function PDF({ title }: PDFProps) {
             </View>
           </View>
           {/*Weeks*/}
-          <View
-            style={[
-              tw("flex-1 flex flex-row gap-px text-xs leading-6 text-gray-700"),
-              { flexGrow: 1 },
-            ]}
-          >
-            {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-              <View
-                key={i}
-                style={[tw("relative bg-white px-3 py-2"), { flexGrow: 1 }]}
-              >
-                <Text>{i}</Text>
-              </View>
-            ))}
-          </View>
-          <View
-            style={[
-              tw("flex-1 flex flex-row gap-px text-xs leading-6 text-gray-700"),
-              { flexGrow: 1 },
-            ]}
-          >
-            {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-              <View
-                key={i}
-                style={[tw("relative bg-white px-3 py-2"), { flexGrow: 1 }]}
-              >
-                <Text>{i}</Text>
-              </View>
-            ))}
-          </View>
-          <View
-            style={[
-              tw("flex-1 flex flex-row gap-px text-xs leading-6 text-gray-700"),
-              { flexGrow: 1 },
-            ]}
-          >
-            {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-              <View
-                key={i}
-                style={[tw("relative bg-white px-3 py-2"), { flexGrow: 1 }]}
-              >
-                <Text>{i}</Text>
-              </View>
-            ))}
-          </View>
-          <View
-            style={[
-              tw("flex-1 flex flex-row gap-px text-xs leading-6 text-gray-700"),
-              { flexGrow: 1 },
-            ]}
-          >
-            {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-              <View
-                key={i}
-                style={[tw("relative bg-white px-3 py-2"), { flexGrow: 1 }]}
-              >
-                <Text>{i}</Text>
-              </View>
-            ))}
-          </View>
-          <View
-            style={[
-              tw("flex-1 flex flex-row gap-px text-xs leading-6 text-gray-700"),
-              { flexGrow: 1 },
-            ]}
-          >
-            {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-              <View
-                key={i}
-                style={[tw("relative bg-white px-3 py-2"), { flexGrow: 1 }]}
-              >
-                <Text>{i}</Text>
-              </View>
-            ))}
-          </View>
-          <View
-            style={[
-              tw("flex-1 flex flex-row gap-px text-xs leading-6 text-gray-700"),
-              { flexGrow: 1 },
-            ]}
-          >
-            {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-              <View
-                key={i}
-                style={[tw("relative bg-white px-3 py-2"), { flexGrow: 1 }]}
-              >
-                <Text>{i}</Text>
-              </View>
-            ))}
-          </View>
+          {dividedDateArray.map((week) => (
+            <View
+              style={[
+                tw(
+                  "flex-1 flex flex-row gap-px text-xs leading-6 text-gray-700"
+                ),
+                { flexGrow: 1 },
+              ]}
+            >
+              {week.map((day, i) => (
+                <View
+                  key={`${day}_${i}`}
+                  style={[
+                    tw(
+                      classNames(
+                        day === 0 ? "bg-gray-100" : "bg-white",
+                        "relative"
+                      )
+                    ),
+                    { flexGrow: 1 },
+                  ]}
+                >
+                  {day !== 0 && (
+                    <Text style={tw("absolute top-3 left-2")}>{day}</Text>
+                  )}
+                </View>
+              ))}
+            </View>
+          ))}
         </View>
       </Page>
     </Document>
